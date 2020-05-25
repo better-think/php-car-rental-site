@@ -1,7 +1,6 @@
 <?php 
 session_start();
 error_reporting(0);
-
 include('includes/config.php');
 
 ?>
@@ -110,80 +109,78 @@ include('includes/config.php');
 <section class="section-padding gray-bg">
 <!-- G and buy section -->
 <div class="container">
-    <hr/>
     <div class="container">
-      <!-- auto compare start -->
-      <!-- <div class="row mt-4">
-            <h2 class="font-weight-bold">avto ehtiyat (auto compare cars)</h2>
-        </div> -->
-        <div class="row">
-            <h2 class="font-weight-bold">Müqayisə et</h2>
-        </div>
-      <!--Carousel Wrapper-->
-      <div id="multi-item-example" class="carousel slide carousel-multi-item mt-4" data-ride="carousel">
-        <!--Slides-->
-        <div class="carousel-inner" role="listbox">
+      <div class="row">
+          <h2 class="font-weight-bold">Aksesuarları Axtarın</h2>
+      </div>
+      <div id="carousel-with-lb" class="carousel slide carousel-multi-item" data-ride="carousel">
+        <!--Indicators-->
+        <ol class="carousel-indicators">
+          <li data-target="#carousel-with-lb" data-slide-to="0" class="active secondary-color"></li>
+          <li data-target="#carousel-with-lb" data-slide-to="1" class="secondary-color"></li>
+          <li data-target="#carousel-with-lb" data-slide-to="2" class="secondary-color"></li>
+        </ol>
+        <!--/.Indicators-->
+        <!--Slides and lightbox-->
+        <div class="carousel-inner mdb-lightbox" role="listbox">
+          <div id="mdb-lightbox-ui"></div>
+          <!--First slide-->
           <?php
-            $sql = "SELECT * FROM `tblvehicles` where type='sell'  ORDER BY RegDate ASC";
+            $sql = "SELECT * FROM `tblaccessories` where year='$_GET[year]' AND make='$_GET[make]' AND model='$_GET[model]' AND trim='$_GET[trim]'  ORDER BY RegDate ASC";
             $query = $dbh->prepare($sql);
             $query->execute();
             $results = $query->fetchAll(PDO::FETCH_OBJ);
-            $year = date("Y");
-            $month = date("m");
-            $day = date("d");
 
-            for ($i = 0; $i < count($results) ; $i++) {
-              $result = $results[$i];
-              if($i % 3 == 0 && $i != 0) {
-                echo "</div>";
+            foreach ($results as $key => $result) {
+              # code...
+              if($key % 6 == 0 && $key != 0) {
+                echo '</div>';
               }
-              if($i % 3 == 0) {
-                if($i == 0) {
-                  echo "<div class='carousel-item active'>";
+              if($key % 6 == 0) {
+                if($key == 0) {
+                  echo '<div class=" carousel-item active text-center">';
                 } else {
-                  echo "<div class='carousel-item'>";
+                  echo '<div class=" carousel-item text-center">';
                 }
               }
-              echo '<div class="col-md-4">
-                <div class="card mb-2">
-                  <a href="body_style_content.php?id='.$result->id.'">
-                    <img class="card-img-top" src="admin/img/vehicleimages/'.$results[$i]->Vimage1 .'"  alt="Car Image" height="250px">
-                  </a>
-                  ';
-              $regDate = explode(' ', $results[$i]->RegDate);
-              $regDate = explode("-", $regDate[0]);
-              if($year == $regDate[0] && $month == $regDate[1] && $regDate[2] > $day-7){
-                echo  '<span class="newPost">new</span>';
-              }    
-              echo '    <div class="card-body">
-                    <h4 class="card-title">'.$results[$i]->VehiclesTitle.'</h4>
+              echo '<figure class="col-md-2 d-md-inline-block">
+                <a href="admin/img/accessories/'.$result->Accessorieimage .'"
+                  data-size="1600x1067">
+                  <img src="admin/img/accessories/'.$result->Accessorieimage .'"
+                    class="img-fluid" style="height:40vh;">
+                </a>
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">'.$result->AccessoriesTitle.'</h4>
                     <p class="card-text"></p>
-                    <p>price:'.$results[$i]->price.'  USD</p>
+                    <p>price:'.$result->price.'USD</p>
                   </div>
                 </div>
-              </div>';
+              </figure>';
             }
-            if($i % 3 != 0) {
-              echo '</div>';
-            }
-          ?>
-         
+            echo '</div>';
 
+          ?>
+          
+          <!--/.First slide-->
         </div>
         <!--/.Slides-->
-        
-      </div>
-      <!--Controls-->
+          <!--Controls-->
         <div class="controls-top" style="text-align: right;background-color: #4285f4;">
-          <a class="btn-floating" href="#multi-item-example" data-slide="prev"><i class="fas fa-chevron-left"></i></a>
-          <a class="btn-floating" href="#multi-item-example" data-slide="next"><i class="fas fa-chevron-right"></i></a>
+          <a class="btn-floating" href="#carousel-with-lb" data-slide="prev"><i class="fas fa-chevron-left"></i></a>
+          <a class="btn-floating" href="#carousel-with-lb" data-slide="next"><i class="fas fa-chevron-right"></i></a>
         </div>
         <!--/.Controls-->
+      </div>
+    
       <!--/.Carousel Wrapper-->
       <!-- auto compare end -->
     </div>
  
 </div>
+<!--Carousel Wrapper-->
+
+<!--/.Carousel Wrapper-->
 
 </div>
 </section>
@@ -266,8 +263,26 @@ include('includes/config.php');
   <script type="text/javascript" src="assets/MDB/js/mdb.min.js"></script>
   <script type="text/javascript">
       // Material Select Initialization
-      $(document).ready(function() {
+    $(document).ready(function() {
       $('.mdb-select').materialSelect();
+
+      $('.carousel.carousel-multi-item.v-2 .carousel-item').each(function(){
+        var next = $(this).next();
+        if (!next.length) {
+          next = $(this).siblings(':first');
+        }
+        next.children(':first-child').clone().appendTo($(this));
+
+        for (var i=0;i<4;i++) {
+          next=next.next();
+          if (!next.length) {
+            next=$(this).siblings(':first');
+          }
+          next.children(':first-child').clone().appendTo($(this));
+        }
+      });
+
+
       $('.select-wrapper.md-form.md-outline input.select-dropdown').bind('focus blur', function () {
         $(this).closest('.select-outline').find('label').toggleClass('active');
         $(this).closest('.select-outline').find('.caret').toggleClass('active');
@@ -388,6 +403,7 @@ include('includes/config.php');
           $('.rent-car').removeClass('hidden');
           $('#rent_car_more').addClass('hidden');
       });  
+      
      
     });
   </script>
