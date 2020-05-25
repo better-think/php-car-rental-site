@@ -1,0 +1,43 @@
+#panel84 {
+  text-align: center;
+}
+  #panel84 > button {
+    width: 180px;
+  }
+#panel83 {
+  text-align: center;
+}
+  #panel83 > button {
+    width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+#panel85 {
+  text-align: center;
+}
+  #panel85 > button {
+    width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+#panel86 {
+  text-align: center;
+}
+  #panel86 > button {
+    width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+ .nav>li>a:hover, .nav>li>a:focus{
+  background:#4285f4;
+  border-radius:0px 50px 50px 0px;
+}
+
+#navli.nav-item{
+  border-radius: 0px 50px 50px 0px;
+  border-right:1px solid #FFF;
+  width:250px;
+}

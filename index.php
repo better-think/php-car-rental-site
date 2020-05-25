@@ -115,50 +115,8 @@ if(isset($_POST['submit'])) {
     .rend-car-card{
       margin-bottom: 15px;
     }
-    #panel84 {
-      text-align: center;
-    }
-      #panel84 > button {
-        width: 180px;
-      }
-    #panel83 {
-      text-align: center;
-    }
-      #panel83 > button {
-        width: 180px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-    #panel85 {
-      text-align: center;
-    }
-      #panel85 > button {
-        width: 180px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-    #panel86 {
-      text-align: center;
-    }
-      #panel86 > button {
-        width: 180px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-     .nav>li>a:hover, .nav>li>a:focus{
-      background:#4285f4;
-      border-radius:0px 50px 50px 0px;
-    }
-
-    #navli.nav-item{
-      border-radius: 0px 50px 50px 0px;
-      border-right:1px solid #FFF;
-      width:250px;
-    }
   </style>
+  <link href="assets/css/accessory-search.css" rel="stylesheet"></link>
 
 </head>
 <body>
@@ -428,7 +386,9 @@ if(isset($_POST['submit'])) {
           </div>
       </div>
     </div>
-    
+    <hr/>
+    <hr/>
+
     <!-- compare section-->
     <div class="container">
         <div class="row">
@@ -613,7 +573,7 @@ if(isset($_POST['submit'])) {
     <hr/>
     <!-- accessory search -->
     <div class="row">
-      <div class="col-11 col-xl-11" style="margin-left: 6%;">
+      <div class="col-11 col-xl-11" style="margin-left: 5%;">
         <div class="row">
           <h2 class="font-weight-bold">Aksesuarları axtarın(Search Accesories)</h2>
         </div>
@@ -626,7 +586,7 @@ if(isset($_POST['submit'])) {
                   <li class="nav-item active" id="navli">
                     <a id="accessory-year" class="nav-link waves-light waves-effect waves-light active" data-toggle="tab" href="#panel83" role="tab">
                         <!-- <i class="fas fa-heart fa-2x" aria-hidden="true"></i> -->
-                        <br><h1 class="white-text"> YEAR</h1>
+                        <br><h2 class="white-text"> YEAR</h2>
                     </a>
                   </li>
                   <li class="nav-item" id="navli">
@@ -688,6 +648,8 @@ if(isset($_POST['submit'])) {
         <!-- Classic tabs -->
       </div>
     </div>
+
+    <hr/>
 
     <div class="container">
       <!-- auto compare start -->
@@ -1427,11 +1389,9 @@ if(isset($_POST['submit'])) {
       $('#rent_car_more').click(function(){
           $('.rent-car').removeClass('hidden');
           $('#rent_car_more').addClass('hidden');
-      });   
-
+      });  
+     
   });
-      
-
       
       function getYears (id, makeId) {
         var selectedYear = $('#' + id)[0].value;
@@ -1810,86 +1770,7 @@ if(isset($_POST['submit'])) {
           }
         });
       }
-      function getMakeForAccesories(yearId) {
-        $.ajax({
-          method: "post",
-          url: "model.php",
-          data: "action=getMakesByYearId&yearId=" + yearId,
-          success : function (makes) {
-            if(makes = JSON.parse(makes)) {
-              var strHtml = "";
-              makes.map(function (dt, index) {
-                strHtml += `<button class="btn btn-outline-info waves-effect" onclick="getModelsForAccesories(${yearId}, ${dt.id})">${dt.name}</button>`
-              })
-              $("#panel84").html(strHtml);
-              $("#panel84").addClass("active show in");
-              $("#panel83").removeClass("active show in");
-              $("#accessory-year").removeClass("active");
-              $("#accessory-make").addClass("active");
-
-              $("#accessory-make").removeClass("disabled");
-            } else {
-              return false;
-            }
-          },
-          error: function (){
-            alert("Warnning")
-          }
-        })
-      }
-      function getModelsForAccesories(yearId, makeId) {
-        $.ajax({
-          method: "post",
-          url: "model.php",
-          data: "action=getModelsByMakeId&yearId=" + yearId + "&makeId=" + makeId,
-          success : function (models) {
-            if(models = JSON.parse(models)) {
-              var strHtml = "";
-              models.map(function (dt, index) {
-                strHtml += `<button class="btn btn-outline-info waves-effect" onclick="getTrimsForAccessrories(${yearId}, ${dt.id}, ${dt.id})">${dt.name}</button>`
-              })
-              $("#panel85").html(strHtml);
-              $("#panel85").addClass("active show in");
-              $("#panel84").removeClass("active show in");
-              $("#accessory-make").removeClass("active");
-              $("#accessory-model").addClass("active");
-
-
-            } else {
-              return false;
-            }
-          },
-          error: function (){
-            alert("Warnning")
-          }
-        })
-      }
-      function getTrimsForAccessrories(yearId, makeId, modelId) {
-        $.ajax({
-          method: "post",
-          url: "model.php",
-          data: "action=getTrimsForAccesories&yearId=" + yearId + "&makeId=" + makeId + "&modelId=" + modelId,
-          success : function (models) {
-            if(models = JSON.parse(models)) {
-              var strHtml = "";
-              models.map(function (dt, index) {
-                strHtml += `<a class="btn btn-outline-info waves-effect" href="#">${dt.name}</a>`
-              });
-              $("#panel86").html(strHtml);
-              $("#panel86").addClass("active show in");
-              $("#panel85").removeClass("active show in");
-              $("#accessory-model").removeClass("active");
-              $("#accessory-trim").addClass("active");
-            } else {
-              return false;
-            }
-          },
-          error: function (){
-            alert("Warnning")
-          }
-        })
-      }
   </script>
-
+  <script src="assets/js/accessory-search.js"> </script> 
 <!-- Mirrored from themes.webmasterdriver.net/carforyou/demo/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Jun 2017 07:22:11 GMT -->
 </html>
