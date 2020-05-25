@@ -76,7 +76,7 @@ function getMakeForAccesories(yearId) {
 		if(models = JSON.parse(models)) {
 		  var strHtml = "";
 		  models.map(function (dt, index) {
-			strHtml += `<a class="btn btn-outline-info waves-effect" href="#">${dt.name}</a>`
+			strHtml += `<a class="btn btn-outline-info waves-effect" href="accessories-search.php?year=${yearId}&make=${makeId}&model=${modelId}&trim=${dt.id}">${dt.name}</a>`
 		  });
 		  $("#panel86").html(strHtml);
 		  $("#panel86").addClass("active show in");
@@ -84,7 +84,6 @@ function getMakeForAccesories(yearId) {
 		  $("#accessory-model").removeClass("active");
 		  $("#accessory-trim").addClass("active");
 		  $("#accessory-trim").removeClass("disabled");
-
 		} else {
 		  return false;
 		}

@@ -592,19 +592,19 @@ if(isset($_POST['submit'])) {
                   <li class="nav-item" id="navli">
                     <a id="accessory-make" class="nav-link waves-light waves-effect waves-light disabled" data-toggle="tab" href="#panel84" role="tab">
                         <!-- <i class="fas fa-heart fa-2x" aria-hidden="true"></i> -->
-                        <br><h1 class="white-text"> MAKE</h1>
+                        <br><h2 class="white-text"> MAKE</h2>
                     </a>
                   </li>
                   <li class="nav-item" id="navli">
                     <a id="accessory-model" class="nav-link waves-light waves-effect waves-light disabled" data-toggle="tab" href="#panel85" role="tab" aria-selected="false">
                         <!-- <i class="fas fa-envelope fa-2x" aria-hidden="true"></i> -->
-                        <br><h1 class="white-text"> MODEL</h1>
+                        <br><h2 class="white-text"> MODEL</h2>
                     </a>
                   </li>
                   <li class="nav-item" id="navli">
                     <a id="accessory-trim" class="nav-link waves-light waves-effect waves-light disabled" data-toggle="tab" href="#panel86" role="tab" aria-selected="true">
                         <!-- <i class="fas fa-star fa-2x" aria-hidden="true"></i> -->
-                        <br><h1 class="white-text"> TRIM</h1>
+                        <br><h2 class="white-text"> TRIM</h2>
                     </a>
                   </li>
               </ul>

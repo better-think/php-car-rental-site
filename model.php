@@ -44,8 +44,8 @@ if($_POST["action"] == "getModelsByMakeId") {
   exit(json_encode($results));
 }
 if($_POST["action"] == "getTrimsForAccesories") {
-  $sql="SELECT id, name FROM `tblmodel` ORDER BY name ASC";
-  // $sql="SELECT id, name FROM `tbltrims` ORDER BY name ASC";
+  // $sql="SELECT id, name FROM `tblmodel` ORDER BY name ASC";
+  $sql="SELECT id, name FROM `tbltrims` ORDER BY name ASC";
   $query = $dbh->prepare($sql);
   $query->execute();
   $results = $query -> fetchAll(PDO::FETCH_OBJ);
