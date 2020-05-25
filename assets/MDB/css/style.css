@@ -5942,3 +5942,7 @@ div[id^="gemini-ad-native"] {
 		max-width: 50%
 	}
 }
+div#back-top.back-top > a {
+	background-color: #4285f4;
+    border: outset
+}

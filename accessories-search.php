@@ -147,7 +147,7 @@ include('includes/config.php');
                 <a href="admin/img/accessories/'.$result->Accessorieimage .'"
                   data-size="1600x1067">
                   <img src="admin/img/accessories/'.$result->Accessorieimage .'"
-                    class="img-fluid" style="height:40vh;">
+                    class="img-fluid" style="height:35vh;">
                 </a>
                 <div class="card">
                   <div class="card-body">
