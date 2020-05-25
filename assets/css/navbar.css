@@ -1,0 +1,67 @@
+
+  #carrent.nav > li {
+    width: 150px;
+    text-align: center;
+    margin-bottom: 0px;
+  }
+
+  #newstyle.default-header {
+    background: linear-gradient(90deg, #4285f4 20%, #ffffff 80%);
+  }
+
+  #styleli.dropdown {
+    border-radius:50%;
+  }
+
+  #myUL {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  .user_logins {
+    border: 0px solid rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    float: left;
+    margin: 8px 10px 7px 0;
+  }
+  .user_logins ul {
+    padding:0px;
+    margin:0px;
+  }
+  .user_logins ul li {
+    line-height: 17px;
+    list-style: outside none none;
+    margin: 0;
+    padding: 4px 15px 7px;
+  }
+  .user_logins > ul > li a {
+    color:#fff;
+    font-size:12px;
+    font-weight:900;
+    text-transform:uppercase;
+  }
+  .user_logins > ul > li a i {
+    margin:0 2px 0;
+  }
+  .user_logins ul.dropdown-menu {
+    background: white none repeat scroll 0 0;
+    border-radius: 0;
+    padding: 15px 0;
+    top: 107%;
+  }
+  
+  #myUL li a {
+    
+    margin-top: -1px; /* Prevent double borders */
+    background-color: #4285f4;
+    padding: 5px;
+    text-decoration: none;
+    font-size: 8px;
+    color: white;
+    height: 20px;
+    display: block
+  }
+  
+  #myUL li a:hover:not(.header) {
+    background-color: #4285f4;
+  }
