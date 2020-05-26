@@ -9,11 +9,6 @@ else {
     if(isset($_POST['submit'])) {
         $accessorytitle=$_POST['accessorytitle'];
         $price=$_POST['accessoryprice'];
-        $year=$_POST['year'];
-		$make=$_POST['make'];
-		$model=$_POST['model'];
-		$trim=$_POST['trim'];
-		$id=$_GET['id'];
         $accessorytitleview=$_POST['accessorytitleview'];
         $accessoryimage=$_FILES["img"]["name"];
         move_uploaded_file($_FILES["img"]["tmp_name"],"img/accessories/".$_FILES["img"]["name"]);
@@ -21,16 +16,19 @@ else {
         move_uploaded_file($_FILES["img1"]["tmp_name"],"img/accessories/".$_FILES["img1"]["name"]);
         $accessoryimage2=$_FILES["img2"]["name"];
         move_uploaded_file($_FILES["img2"]["tmp_name"],"img/accessories/".$_FILES["img2"]["name"]);
-        $sql="INSERT INTO tblaccessories(AccessoriesTitle,price,AccessoriesOverview,Accessorieimage,Accessorieimage1,Accessorieimage2,year) 
-        VALUES(:accessorytitle,:price,:accessorytitleview,:accessoryimage,:accessoryimage1,:accessoryimage2,:year)";
+        $sql="INSERT INTO tblaccessories(AccessoriesTitle,price,AccessoriesOverview,Accessorieimage,Accessorieimage1,Accessorieimage2,year,make,model,trim) 
+                VALUES(:accessorytitle,:price,:accessorytitleview,:accessoryimage,:accessoryimage1,:accessoryimage2,:year,:make,:model,:trim)";
         $query = $dbh->prepare($sql);
+        $year = $_GET['year'];
+        $make = $_GET['make'];
+        $model = $_GET['model'];
+        $trim = $_GET['trim'];
         $query->bindParam(':accessorytitle',$accessorytitle,PDO::PARAM_STR);
         $query->bindParam(':price',$price,PDO::PARAM_STR);
-        $query->bindParam(':year',$year,PDO::PARAM_STR);
-		$query->bindParam(':make',$make,PDO::PARAM_STR);
-		$query->bindParam(':model',$model,PDO::PARAM_STR);
-		$query->bindParam(':trim',$trim,PDO::PARAM_STR);
-		$query->bindParam(':id',$id,PDO::PARAM_STR);
+        $query->bindParam(':year',$year, PDO::PARAM_STR);
+		$query->bindParam(':make',$make, PDO::PARAM_STR);
+		$query->bindParam(':model',$model, PDO::PARAM_STR);
+		$query->bindParam(':trim',$trim, PDO::PARAM_STR);
         $query->bindParam(':accessorytitleview',$accessorytitleview,PDO::PARAM_STR);
         $query->bindParam(':accessoryimage',$accessoryimage,PDO::PARAM_STR);
         $query->bindParam(':accessoryimage1',$accessoryimage1,PDO::PARAM_STR);
@@ -76,24 +74,6 @@ else {
         <!-- Admin Stye -->
         <link rel="stylesheet" href="css/style.css">
 
-        <!-- <script src="../assets/MDB/js/jquery.min.js"></script>  
-        <script src="../assets/MDB/js/popper.min.js"></script>
-        <script src="../assets/MDB/js/bootstrap.min.js"></script>
-
-        <script src="../assets/MDB/js/bootstrap.js"></script>
-
-        <script src="../assets/MDB/js/mdb.js"></script>
-        <script src="../assets/MDB/js/addons-pro/multi-range.min.js"></script> -->
-        <!-- Font Awesome -->
-        <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"> -->
-        <!-- Bootstrap core CSS -->
-        <!-- <link href="../assets/MDB/css/bootstrap.min.css" rel="stylesheet"> -->
-        <!-- <link href="../assets/MDB/css/bootstrap.css" rel="stylesheet"> -->
-        <!-- Material Design Bootstrap -->
-        <!-- <link href="../assets/MDB/css/mdb.min.css" rel="stylesheet"> -->
-        <!-- <link href="../assets/MDB/css/mdb.css" rel="stylesheet"> -->
-        <!-- <link href="../assets/MDB/css/addons-pro/multi-range.min.css" rel="stylesheet"> -->
-        <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
         
 
         <style>
@@ -183,7 +163,10 @@ else {
                                 <!-- Tab panels -->
                                 <div class="tab-content">
                                     <!--Panel 1-->
-                                    <div class="tab-pane active" id="panel83" role="tabpanel">
+                                    <?php
+                                        if($_GET['year'] != "") {
+                                    ?>
+                                    <div class="tab-pane" id="panel83" role="tabpanel">
                                         <?php
                                             $sql="SELECT * FROM `tblyear`";
                                             $query = $dbh->prepare($sql);
@@ -194,12 +177,35 @@ else {
                                             foreach($results as $result){
                                                 $i++;
                                                 ?>
-                                                <button class="btn btn-outline-info waves-effect" onclick="getMakeForAccesory(<?php echo htmlentities($result->id);?>)" name = "<?php echo htmlentities($result->id);?>"><?php echo htmlentities($result->year);?></button>
+                                                <button class="btn btn-outline-info waves-effect" onclick="getMakeForAccesory(<?php echo htmlentities($result->id);?>)" value = "<?php echo htmlentities($result->id);?>"><?php echo htmlentities($result->year);?></button>
                                                 <?php
                                             }
                                             }
                                         ?>
                                     </div>
+                                    <?php }
+                                        else {
+
+                                        ?>
+                                        <div class="tab-pane active" id="panel83" role="tabpanel">
+                                        <?php
+                                            $sql="SELECT * FROM `tblyear`";
+                                            $query = $dbh->prepare($sql);
+                                            $query->execute();
+                                            $results = $query -> fetchAll(PDO::FETCH_OBJ);
+                                            if(count($results) > 0){
+                                            $i = 0;
+                                            foreach($results as $result){
+                                                $i++;
+                                                ?>
+                                                <button class="btn btn-outline-info waves-effect" onclick="getMakeForAccesory(<?php echo htmlentities($result->id);?>)" value = "<?php echo htmlentities($result->id);?>"><?php echo htmlentities($result->year);?></button>
+                                                <?php
+                                            }
+                                            }
+                                        ?>
+                                    </div>
+
+                                        <?php } ?>
                                     <!--/.Panel 1-->
                                     <!--Panel 2-->
                                     <div class="tab-pane" id="panel84" role="tabpanel">
@@ -223,14 +229,13 @@ else {
                             <div class="row" id = "show_Accessory">
                                 <div class="col-md-12">
                                     <div class="panel panel-default">
-                                        <div class="panel-heading">Accessory</div>
                                         <?php if($error){
                                             ?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } 
                                         else if($msg){
                                             ?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php }?>
                                         <div class="panel-body">
                                             <!-- form start -->
-                                            <form method="post" class="form-horizontal" enctype="multipart/form-data">
+                                            <form method="post" class="form-horizontal" enctype="multipart/form-data" onSubmit="return valid();">
                                                 <div class="form-group">
                                                         <label class="col-sm-2 control-label">Accessory Title<span style="color:red">*</span>
                                                         </label>
@@ -323,9 +328,19 @@ else {
         <script src="js/main.js">
         </script>
         <script>
-            $("#show_Accessory").hide();
-            function show_Accessory(){
+            $("#accessory-year").click(function() {
+                if(location.search.split("&").length > 0) {
+                    location.search = "";
+                }
+            })
+            // $("#show_Accessory").hide();
+            function show_Accessory(year,make,model,trim){
                 $("#show_Accessory").show();
+                year = year;
+                make = make;
+                model = model;
+                trim = trim;
+                location.search = "?year=" + year + "&make=" + make + "&model=" + model + "&trim="+ trim;
             }
         </script>
     </body>

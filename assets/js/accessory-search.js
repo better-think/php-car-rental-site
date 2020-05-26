@@ -49,7 +49,7 @@ function getModelsForAccesories(yearId, makeId) {
 		if(models = JSON.parse(models)) {
 		var strHtml = "";
 		models.map(function (dt, index) {
-			strHtml += `<button class="btn btn-outline-info waves-effect" onclick="getTrimsForAccessrories(${yearId}, ${dt.id}, ${dt.id})">${dt.name}</button>`
+			strHtml += `<button class="btn btn-outline-info waves-effect" onclick="getTrimsForAccessrories(${yearId}, ${makeId}, ${dt.id})">${dt.name}</button>`
 		})
 		$("#panel85").html(strHtml);
 		$("#panel85").addClass("active show in");
@@ -156,7 +156,7 @@ function getModelsForAccesory(yearId, makeId) {
 		if(models = JSON.parse(models)) {
 		var strHtml = "";
 		models.map(function (dt, index) {
-			strHtml += `<button class="btn btn-outline-info waves-effect" onclick="getTrimsForAccessrory(${yearId}, ${dt.id}, ${dt.id})" value = "${dt.id}">${dt.name}</button>`
+			strHtml += `<button class="btn btn-outline-info waves-effect" onclick="getTrimsForAccessrory(${yearId}, ${makeId}, ${dt.id})" value = "${dt.id}">${dt.name}</button>`
 		})
 		$("#panel85").html(strHtml);
 		$("#panel85").addClass("active show in");
@@ -183,7 +183,7 @@ function getTrimsForAccessrory(yearId, makeId, modelId) {
 		if(models = JSON.parse(models)) {
 			var strHtml = "";
 			models.map(function (dt, index) {
-			strHtml += `<a class="btn btn-outline-info waves-effect" onclick="show_Accessory()" value = "${dt.id}">${dt.name}</a>`
+				strHtml += `<a class="btn btn-outline-info waves-effect" onclick="show_Accessory(${yearId},${makeId},${modelId},${dt.id})" value = "${dt.id}">${dt.name}</a>`
 			});
 			$("#panel86").html(strHtml);
 			$("#panel86").addClass("active show in");
@@ -199,4 +199,4 @@ function getTrimsForAccessrory(yearId, makeId, modelId) {
 		alert("Warnning")
 		}
 	})
-	}
+}
