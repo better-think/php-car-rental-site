@@ -11,11 +11,13 @@ else {
         $price=$_POST['accessoryprice'];
         $accessorytitleview=$_POST['accessorytitleview'];
         $accessoryimage=$_FILES["img"]["name"];
+
         move_uploaded_file($_FILES["img"]["tmp_name"],"img/accessories/".$_FILES["img"]["name"]);
         $accessoryimage1=$_FILES["img1"]["name"];
         move_uploaded_file($_FILES["img1"]["tmp_name"],"img/accessories/".$_FILES["img1"]["name"]);
         $accessoryimage2=$_FILES["img2"]["name"];
         move_uploaded_file($_FILES["img2"]["tmp_name"],"img/accessories/".$_FILES["img2"]["name"]);
+
         $sql="INSERT INTO tblaccessories(AccessoriesTitle,price,AccessoriesOverview,Accessorieimage,Accessorieimage1,Accessorieimage2,year,make,model,trim) 
                 VALUES(:accessorytitle,:price,:accessorytitleview,:accessoryimage,:accessoryimage1,:accessoryimage2,:year,:make,:model,:trim)";
         $query = $dbh->prepare($sql);
@@ -33,9 +35,9 @@ else {
         $query->bindParam(':accessoryimage',$accessoryimage,PDO::PARAM_STR);
         $query->bindParam(':accessoryimage1',$accessoryimage1,PDO::PARAM_STR);
         $query->bindParam(':accessoryimage2',$accessoryimage2,PDO::PARAM_STR);
-        $query->execute();
-        $lastInsertId = $dbh->lastInsertId();
-        if($lastInsertId){
+        // $query->execute();
+        // $lastInsertId = $dbh->lastInsertId();
+        if($query->execute()){
             $msg="Accessory posted successfully";
         }
         else {
@@ -333,7 +335,6 @@ else {
                     location.search = "";
                 }
             })
-            // $("#show_Accessory").hide();
             function show_Accessory(year,make,model,trim){
                 $("#show_Accessory").show();
                 year = year;

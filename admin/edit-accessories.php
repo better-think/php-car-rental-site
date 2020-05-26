@@ -11,40 +11,47 @@ else{
 	{
 		$fileNames = array();
 		for ($i=1; $i < 4; $i++) { 
-		$fileNames[]=$_POST["img".$i];
-		move_uploaded_file($_FILES["img".$i]["tmp_name"],"img/accessories/".$_FILES["img".$i]["name"]);
+			$fileNames[]=$_FILES["img".$i]["name"];
+			// if($_FILES["img".$i]["name"] != "") {
+				// $fileNames[]=$_FILES["img".$i]["name"];
+				move_uploaded_file($_FILES["img".$i]["tmp_name"],"img/accessories/".$_FILES["img".$i]["name"]);	
+			//}
 		}
-		
-
-		$AccessoriesTitle=$_POST['AccessoriesTitle'];
-		$AccessoriesOverview=$_POST['AccessoriesOverview'];
-		$price=$_POST['price'];
 		$year=$_POST['year'];
 		$make=$_POST['make'];
 		$model=$_POST['model'];
 		$trim=$_POST['trim'];
-		$id=$_GET['id'];
-		$sql="UPDATE  tblaccessories SET AccessoriesTitle=:AccessoriesTitle,AccessoriesOverview=:AccessoriesOverview,price=:price,year=:year,make=:make,model=:model,trim=:trim";
+		$price=$_POST['price'];
+		$sql="UPDATE  tblaccessories SET AccessoriesTitle=:AccessoriesTitle,AccessoriesOverview=:AccessoriesOverview,price=$price,year=$year,make=$make,model=$model,trim=$trim ";
+		// $sql="UPDATE  tblaccessories SET AccessoriesTitle='AccessoriesTitle,AccessoriesOverview=:AccessoriesOverview,price=:price,year=:year,make=:make,model=:model,trim=:trim ";
+		
 		foreach ($fileNames as $key => $filename) {
-		if($filename == "") {
-			continue;
-		}
-		if($key==0){
-			$temp=", Accessorieimage" . "='$filename' ";
-		}
-		$temp = ", Accessorieimage". ($key) . "='$filename' ";
-		$sql .= $temp;
+			$temp = "";
+			if($filename == "") {
+				continue;
+			}
+			if($key==0){
+				$temp=", Accessorieimage" . "='$filename' ";
+			} else {
+				$temp = ", Accessorieimage". ($key) . "='$filename' ";
+			}
+			$sql .= $temp;
 		}
 		$sql .= " WHERE id=:id";
-		$query = $dbh->prepare($sql);
+
+		$AccessoriesTitle = $_POST["AccessoriesTitle"];
+		$AccessoriesOverview=$_POST['AccessoriesOverview'];
 		
+		$id=$_GET['id'];
+
+		$query = $dbh->prepare($sql);
 		$query->bindParam(':AccessoriesTitle',$AccessoriesTitle,PDO::PARAM_STR);
 		$query->bindParam(':AccessoriesOverview',$AccessoriesOverview,PDO::PARAM_STR);
-		$query->bindParam(':price',$price,PDO::PARAM_STR);
-		$query->bindParam(':year',$year,PDO::PARAM_STR);
-		$query->bindParam(':make',$make,PDO::PARAM_STR);
-		$query->bindParam(':model',$model,PDO::PARAM_STR);
-		$query->bindParam(':trim',$trim,PDO::PARAM_STR);
+		// $query->bindParam(':price',$price,PDO::PARAM_STR);
+		// $query->bindParam(':year',$year,PDO::PARAM_STR);
+		// $query->bindParam(':make',$make,PDO::PARAM_STR);
+		// $query->bindParam(':model',$model,PDO::PARAM_STR);
+		// $query->bindParam(':trim',$trim,PDO::PARAM_STR);
 		$query->bindParam(':id',$id,PDO::PARAM_STR);
 		$query->execute();
 		$msg="Accessories updted successfully";
@@ -119,7 +126,7 @@ else{
 								<div class="panel panel-default">
 									<div class="panel-heading">Form fields</div>
 									<div class="panel-body">
-										<form method="post" name="chngpwd" class="form-horizontal" onSubmit="return valid();">
+										<form method="post" name="chngpwd" class="form-horizontal" enctype="multipart/form-data" onSubmit="return valid();">
 										
 											
   	        	  <?php if($error){?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } 
@@ -129,7 +136,7 @@ else{
 					$id = $_GET['id'];
 					$ret = "SELECT
 					`tblaccessories`.`AccessoriesTitle`,`tblaccessories`.`AccessoriesOverview`,`tblaccessories`.`Accessorieimage`,`tblaccessories`.`Accessorieimage1`,`tblaccessories`.`Accessorieimage2`,`tblaccessories`.`price`
-					,`tblyear`.`year`,`tblbrands`.`name` AS make,`tblmodel`.`name` AS model,`tbltrims`.`name` AS trim
+					,`tblyear`.`year`,`tblyear`.`id` AS yearid,`tblbrands`.`name` AS make,`tblbrands`.`id` AS makeid,`tblmodel`.`name` AS model,`tblmodel`.`id` AS modelid,`tbltrims`.`name` AS trim,`tbltrims`.`id` AS trimid
 					
 				  FROM
 					`carrental`.`tblaccessories`
@@ -163,9 +170,9 @@ else{
 												<div class="form-group  col-md-6">
 												<label class="mdb-main-label" >Year</label>
 												<select class=" md-form form-control col-md-12" editable="true" name="year" searchable="Search and add here..." >
-													<option  value="<?php echo htmlentities($result->year);?>" selected><?php echo htmlentities($result->year);?></option>
+													<option  value="<?php echo htmlentities($result->yearid);?>" selected><?php echo htmlentities($result->year);?></option>
 													<?php
-													$sql = "SELECT * FROM `tblyear` ORDER BY year ASC ";
+													$sql = "SELECT * FROM `tblyear` ORDER BY year desc ";
 													$query = $dbh -> prepare($sql);
 													$query->execute();
 													$results1=$query->fetchAll(PDO::FETCH_OBJ);
@@ -183,7 +190,7 @@ else{
 												<div class="form-group  col-md-6">
 												<label class="mdb-main-label" >Make</label>
 												<select class=" md-form form-control col-md-12" editable="true" name="make" searchable="Search and add here..." >
-													<option  value="<?php echo htmlentities($result->make);?>" selected><?php echo htmlentities($result->make);?></option>
+													<option  value="<?php echo htmlentities($result->makeid);?>" selected><?php echo htmlentities($result->make);?></option>
 													<?php
 													$sql = "SELECT * FROM `tblbrands` ORDER BY name ASC ";
 													$query = $dbh -> prepare($sql);
@@ -203,7 +210,7 @@ else{
 												<div class="form-group  col-md-6">
 												<label class="mdb-main-label" >Model</label>
 												<select class=" md-form form-control col-md-12" editable="true" name="model" searchable="Search and add here..." >
-													<option  value="<?php echo htmlentities($result->model);?>" selected><?php echo htmlentities($result->model);?></option>
+													<option  value="<?php echo htmlentities($result->modelid);?>" selected><?php echo htmlentities($result->model);?></option>
 													<?php
 													$sql = "SELECT * FROM `tblmodel` ORDER BY name ASC ";
 													$query = $dbh -> prepare($sql);
@@ -223,7 +230,7 @@ else{
 												<div class="form-group  col-md-6">
 												<label class="mdb-main-label" >Trim</label>
 												<select class=" md-form form-control col-md-12" editable="true" name="trim" searchable="Search and add here..." >
-													<option  value="<?php echo htmlentities($result->trim);?>" selected><?php echo htmlentities($result->trim);?></option>
+													<option  value="<?php echo htmlentities($result->trimid);?>" selected><?php echo htmlentities($result->trim);?></option>
 													<?php
 													$sql = "SELECT * FROM `tbltrims` ORDER BY name ASC ";
 													$query = $dbh -> prepare($sql);
