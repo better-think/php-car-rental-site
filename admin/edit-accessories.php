@@ -7,20 +7,48 @@ if(strlen($_SESSION['alogin'])==0)
 header('location:index.php');
 }
 else{
-// Code for change password	
-if(isset($_POST['submit']))
-{
-	$AccessoriesTitle=$_POST['AccessoriesTitle'];
-	$id=$_GET['id'];
-	$sql="update  tblaccessories set AccessoriesTitle=:AccessoriesTitle where id=:id";
-	$query = $dbh->prepare($sql);
-	$query->bindParam(':AccessoriesTitle',$AccessoriesTitle,PDO::PARAM_STR);
-	$query->bindParam(':id',$id,PDO::PARAM_STR);
-	$query->execute();
-	$lastInsertId = $dbh->lastInsertId();
+	if(isset($_POST['submit']))
+	{
+		$fileNames = array();
+		for ($i=1; $i < 4; $i++) { 
+		$fileNames[]=$_POST["img".$i];
+		move_uploaded_file($_FILES["img".$i]["tmp_name"],"img/accessories/".$_FILES["img".$i]["name"]);
+		}
+		
 
-	$msg="AccessoriesTitle updted successfully";
-}
+		$AccessoriesTitle=$_POST['AccessoriesTitle'];
+		$AccessoriesOverview=$_POST['AccessoriesOverview'];
+		$price=$_POST['price'];
+		$year=$_POST['year'];
+		$make=$_POST['make'];
+		$model=$_POST['model'];
+		$trim=$_POST['trim'];
+		$id=$_GET['id'];
+		$sql="UPDATE  tblaccessories SET AccessoriesTitle=:AccessoriesTitle,AccessoriesOverview=:AccessoriesOverview,price=:price,year=:year,make=:make,model=:model,trim=:trim";
+		foreach ($fileNames as $key => $filename) {
+		if($filename == "") {
+			continue;
+		}
+		if($key==0){
+			$temp=", Accessorieimage" . "='$filename' ";
+		}
+		$temp = ", Accessorieimage". ($key) . "='$filename' ";
+		$sql .= $temp;
+		}
+		$sql .= " WHERE id=:id";
+		$query = $dbh->prepare($sql);
+		
+		$query->bindParam(':AccessoriesTitle',$AccessoriesTitle,PDO::PARAM_STR);
+		$query->bindParam(':AccessoriesOverview',$AccessoriesOverview,PDO::PARAM_STR);
+		$query->bindParam(':price',$price,PDO::PARAM_STR);
+		$query->bindParam(':year',$year,PDO::PARAM_STR);
+		$query->bindParam(':make',$make,PDO::PARAM_STR);
+		$query->bindParam(':model',$model,PDO::PARAM_STR);
+		$query->bindParam(':trim',$trim,PDO::PARAM_STR);
+		$query->bindParam(':id',$id,PDO::PARAM_STR);
+		$query->execute();
+		$msg="Accessories updted successfully";
+	}
 ?>
 
 <!doctype html>
@@ -84,7 +112,7 @@ if(isset($_POST['submit']))
 				<div class="row">
 					<div class="col-md-12">
 					
-						<h2 class="page-title">Create Accessories</h2>
+						<h2 class="page-title">Update Accessories</h2>
 
 						<div class="row">
 							<div class="col-md-10">
@@ -99,7 +127,28 @@ if(isset($_POST['submit']))
 
 					<?php	
 					$id = $_GET['id'];
-					$ret = "select * from tblaccessories where id=:id";
+					$ret = "SELECT
+					`tblaccessories`.`AccessoriesTitle`,`tblaccessories`.`AccessoriesOverview`,`tblaccessories`.`Accessorieimage`,`tblaccessories`.`Accessorieimage1`,`tblaccessories`.`Accessorieimage2`,`tblaccessories`.`price`
+					,`tblyear`.`year`,`tblbrands`.`name` AS make,`tblmodel`.`name` AS model,`tbltrims`.`name` AS trim
+					
+				  FROM
+					`carrental`.`tblaccessories`
+					LEFT JOIN `carrental`.`tblyear`
+					  ON (
+						`tblaccessories`.`year` = `tblyear`.`id`
+					  )
+					  LEFT JOIN `carrental`.`tblbrands`
+					  ON (
+						`tblaccessories`.`make` = `tblbrands`.`id`
+					  )
+					  LEFT JOIN `carrental`.`tbltrims`
+					  ON (
+						`tblaccessories`.`trim` = `tbltrims`.`id`
+					  )
+					  LEFT JOIN `carrental`.`tblmodel`
+					  ON (
+						`tblaccessories`.`model` = `tblmodel`.`id`
+					  ) WHERE `tblaccessories`.`id`=:id";
 					$query = $dbh -> prepare($ret);
 					$query->bindParam(':id',$id, PDO::PARAM_STR);
 					$query-> execute();
@@ -110,22 +159,134 @@ if(isset($_POST['submit']))
 					foreach($results as $result)
 					{
 					?>
-
-											<div class="form-group">
-												<label class="col-sm-4 control-label">Accessory Name</label>
-												<div class="col-sm-8">
-													<input type="text" class="form-control" value="<?php echo htmlentities($result->AccessoriesTitle);?>" name="AccessoriesTitle" id="brand" required>
+											 <div class="form-row">
+												<div class="form-group  col-md-6">
+												<label class="mdb-main-label" >Year</label>
+												<select class=" md-form form-control col-md-12" editable="true" name="year" searchable="Search and add here..." >
+													<option  value="<?php echo htmlentities($result->year);?>" selected><?php echo htmlentities($result->year);?></option>
+													<?php
+													$sql = "SELECT * FROM `tblyear` ORDER BY year ASC ";
+													$query = $dbh -> prepare($sql);
+													$query->execute();
+													$results1=$query->fetchAll(PDO::FETCH_OBJ);
+													if($query->rowCount() > 0) 
+													{
+														foreach($results1 as $result1) {
+															if($result->year!=$result1->year){
+														echo '<option value="'. $result1->id .'">' . $result1->year . '</option>';
+															}
+														}
+													}
+													?>
+												</select>
+												</div>
+												<div class="form-group  col-md-6">
+												<label class="mdb-main-label" >Make</label>
+												<select class=" md-form form-control col-md-12" editable="true" name="make" searchable="Search and add here..." >
+													<option  value="<?php echo htmlentities($result->make);?>" selected><?php echo htmlentities($result->make);?></option>
+													<?php
+													$sql = "SELECT * FROM `tblbrands` ORDER BY name ASC ";
+													$query = $dbh -> prepare($sql);
+													$query->execute();
+													$results2=$query->fetchAll(PDO::FETCH_OBJ);
+													if($query->rowCount() > 0) 
+													{
+														foreach($results2 as $result2) {
+															if($result->make!=$result2->name){
+																echo '<option value="'. $result2->id .'">' . $result2->name . '</option>';
+															}
+															}
+													}
+													?>
+												</select>
+												</div>
+												<div class="form-group  col-md-6">
+												<label class="mdb-main-label" >Model</label>
+												<select class=" md-form form-control col-md-12" editable="true" name="model" searchable="Search and add here..." >
+													<option  value="<?php echo htmlentities($result->model);?>" selected><?php echo htmlentities($result->model);?></option>
+													<?php
+													$sql = "SELECT * FROM `tblmodel` ORDER BY name ASC ";
+													$query = $dbh -> prepare($sql);
+													$query->execute();
+													$results3=$query->fetchAll(PDO::FETCH_OBJ);
+													if($query->rowCount() > 0) 
+													{
+														foreach($results3 as $result3) {
+															if($result->model!=$result3->name){
+																echo '<option value="'. $result3->id .'">' . $result3->name . '</option>';
+																}
+															}
+													}
+													?>
+												</select>
+												</div>
+												<div class="form-group  col-md-6">
+												<label class="mdb-main-label" >Trim</label>
+												<select class=" md-form form-control col-md-12" editable="true" name="trim" searchable="Search and add here..." >
+													<option  value="<?php echo htmlentities($result->trim);?>" selected><?php echo htmlentities($result->trim);?></option>
+													<?php
+													$sql = "SELECT * FROM `tbltrims` ORDER BY name ASC ";
+													$query = $dbh -> prepare($sql);
+													$query->execute();
+													$results4=$query->fetchAll(PDO::FETCH_OBJ);
+													if($query->rowCount() > 0) 
+													{
+														foreach($results4 as $result4) {
+															if($result->trim!=$result4->name){
+																echo '<option value="'. $result4->id .'">' . $result4->name . '</option>';
+																}
+															}
+													}
+													?>
+												</select>
 												</div>
 											</div>
-											<div class="hr-dashed"></div>
-											
+											<div class="form-row">
+												<div class="form-group col-md-6">
+													<label class="mdb-main-label">Accessory Title</label>
+													<div class="col-sm-12">
+														<input type="text" class="form-control" value="<?php echo htmlentities($result->AccessoriesTitle);?>" name="AccessoriesTitle" required>
+													</div>
+												</div>
+												<div class="hr-dashed"></div>
+												<div class="form-group col-md-6">
+													<label class="mdb-main-label">Price </label>
+													<div class="col-sm-12">
+														<input type="text" class="form-control" value="<?php echo htmlentities($result->price);?>" name="price" required>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-md-12">
+                                                    <label class="mdb-main-label">Accessory Overview<span style="color:red">*</span></label>
+                                                    <div class="col-sm-12">
+                                                    <textarea class="form-control" name="AccessoriesOverview" value="<?php echo htmlentities($result->AccessoriesOverview);?>" rows="3" required><?php echo htmlentities($result->AccessoriesOverview);?></textarea>
+                                                    </div>
+                                                </div>
 										<?php }} ?>
-								
+											<div class="form-group">
+												<div class="col-sm-12">
+													<h4><b>Upload Image</b></h4>
+												</div>
+												<div class="col-sm-4">
+													<img src="img/accessories/<?php echo htmlentities($result->Accessorieimage);?>" class="col-lg-12" height="200" style="border:solid 0px #000">
+                  									<label for="img1">IMG1</label>
+													<input type="file" id="img1"  name="img1" placeholder="file1">
+												</div>
+												<div class="col-sm-4">
+													<img src="img/accessories/<?php echo htmlentities($result->Accessorieimage1);?>" class="col-lg-12" height="200" style="border:solid 0px #000">
+                  									<label for="img2">IMG2</label>
+													<input type="file" id="img2" name="img2" placeholder="file2">
+												</div>
+												<div class="col-sm-4">
+													<img src="img/accessories/<?php echo htmlentities($result->Accessorieimage2);?>" class="col-lg-12" height="200" style="border:solid 0px #000">
+                  									<label for="img3">IMG3</label>
+													<input type="file" id="img3"  name="img3" placeholder="file3">
+												</div>
+                                            </div>
 											
 											<div class="form-group">
-												<div class="col-sm-8 col-sm-offset-4">
-								
-													<button class="btn btn-primary" name="submit" type="submit">Submit</button>
+												<div class="col-sm-2 col-sm-offset-10">
+													<button class="btn btn-primary" name="submit" type="submit">Update</button>
 												</div>
 											</div>
 

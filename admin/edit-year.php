@@ -10,16 +10,16 @@ else{
 // Code for change password	
 if(isset($_POST['submit']))
 {
-$model=$_POST['name'];
-$id=$_GET['id'];
-$sql="update  tblmodel set name=:name where id=:id";
-$query = $dbh->prepare($sql);
-$query->bindParam(':name',$model,PDO::PARAM_STR);
-$query->bindParam(':id',$id,PDO::PARAM_STR);
-$query->execute();
-$lastInsertId = $dbh->lastInsertId();
+	$year=$_POST['year'];
+	$id=$_GET['id'];
+	$sql="update  tblyear set year=:year where id=:id";
+	$query = $dbh->prepare($sql);
+	$query->bindParam(':year',$year,PDO::PARAM_STR);
+	$query->bindParam(':id',$id,PDO::PARAM_STR);
+	$query->execute();
+	$lastInsertId = $dbh->lastInsertId();
 
-$msg="Model updted successfully";
+	$msg="updated successfully";
 
 }
 ?>
@@ -35,7 +35,7 @@ $msg="Model updted successfully";
 	<meta name="author" content="">
 	<meta name="theme-color" content="#3e454c">
 	
-	<title>Car Rental Portal | Admin Create Model</title>
+	<title>Car Rental Portal | Admin Create Year</title>
 
 	<!-- Font awesome -->
 	<link rel="stylesheet" href="css/font-awesome.min.css">
@@ -84,7 +84,7 @@ $msg="Model updted successfully";
 
 				<div class="row">
 					<div class="col-md-12">
-						<h2 class="page-title">Edit Model</h2>
+						<h2 class="page-title">Edit Year</h2>
 						<div class="row">
 							<div class="col-md-10">
 								<div class="panel panel-default">
@@ -98,7 +98,7 @@ $msg="Model updted successfully";
 
 <?php	
 $id=$_GET['id'];
-$ret="select * from tblmodel where id=:id";
+$ret="select * from tblyear where id=:id";
 $query= $dbh -> prepare($ret);
 $query->bindParam(':id',$id, PDO::PARAM_STR);
 $query-> execute();
@@ -111,9 +111,9 @@ foreach($results as $result)
 ?>
 
 											<div class="form-group">
-												<label class="col-sm-4 control-label">Model Name</label>
+												<label class="col-sm-4 control-label">Year</label>
 												<div class="col-sm-8">
-													<input type="text" class="form-control" value="<?php echo htmlentities($result->name);?>" name="name" id="model" required>
+													<input type="text" class="form-control" value="<?php echo htmlentities($result->year);?>" name="year" id="year" required>
 												</div>
 											</div>
 											<div class="hr-dashed"></div>

@@ -121,7 +121,12 @@ function getMakeForAccesory(yearId) {
 		$("#accessory-model").removeClass("show active in");
 		$("#panel85").removeClass("show active in");
 		$("#panel86").removeClass("show active in");
+
 	});
+
+
+
+
 	$.ajax({
 	method: "post",
 	url: "../model.php",
@@ -130,7 +135,7 @@ function getMakeForAccesory(yearId) {
 		if(makes = JSON.parse(makes)) {
 		var strHtml = "";
 		makes.map(function (dt, index) {
-			strHtml += `<button class="btn btn-outline-info waves-effect" onclick="getModelsForAccesory(${yearId}, ${dt.id})" value = "${dt.id}">${dt.name}</button>`
+			strHtml += `<button class="btn btn-outline-info waves-effect" onclick="getModelsForAccesory(${yearId}, ${dt.id})">${dt.name}</button>`
 		});
 		$("#panel84").html(strHtml);
 		$("#panel84").addClass("active show in");
@@ -156,7 +161,7 @@ function getModelsForAccesory(yearId, makeId) {
 		if(models = JSON.parse(models)) {
 		var strHtml = "";
 		models.map(function (dt, index) {
-			strHtml += `<button class="btn btn-outline-info waves-effect" onclick="getTrimsForAccessrory(${yearId}, ${dt.id}, ${dt.id})" value = "${dt.id}">${dt.name}</button>`
+			strHtml += `<button class="btn btn-outline-info waves-effect" onclick="getTrimsForAccessrory(${yearId}, ${dt.id}, ${dt.id})">${dt.name}</button>`
 		})
 		$("#panel85").html(strHtml);
 		$("#panel85").addClass("active show in");
@@ -183,7 +188,7 @@ function getTrimsForAccessrory(yearId, makeId, modelId) {
 		if(models = JSON.parse(models)) {
 			var strHtml = "";
 			models.map(function (dt, index) {
-			strHtml += `<a class="btn btn-outline-info waves-effect" onclick="show_Accessory()" value = "${dt.id}">${dt.name}</a>`
+			strHtml += `<a class="btn btn-outline-info waves-effect" onclick="show_Accessory()">${dt.name}</a>`
 			});
 			$("#panel86").html(strHtml);
 			$("#panel86").addClass("active show in");

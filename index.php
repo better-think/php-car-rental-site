@@ -583,28 +583,28 @@ if(isset($_POST['submit'])) {
           <!-- Nav tabs -->
           <div class="tabs-wrapper">
               <ul class="nav tabs-primary" role="tablist">
-                  <li class="nav-item active" id="navli">
+                  <li class="nav-item active search-accessories">
                     <a id="accessory-year" class="nav-link waves-light waves-effect waves-light active" data-toggle="tab" href="#panel83" role="tab">
                         <!-- <i class="fas fa-heart fa-2x" aria-hidden="true"></i> -->
-                        <br><h2 class="white-text"> YEAR</h2>
+                        <h3 class="white-text"> YEAR</h3>
                     </a>
                   </li>
-                  <li class="nav-item" id="navli">
+                  <li class="nav-item search-accessories">
                     <a id="accessory-make" class="nav-link waves-light waves-effect waves-light disabled" data-toggle="tab" href="#panel84" role="tab">
                         <!-- <i class="fas fa-heart fa-2x" aria-hidden="true"></i> -->
-                        <br><h2 class="white-text"> MAKE</h2>
+                        <h3 class="white-text"> MAKE</h3>
                     </a>
                   </li>
-                  <li class="nav-item" id="navli">
+                  <li class="nav-item search-accessories">
                     <a id="accessory-model" class="nav-link waves-light waves-effect waves-light disabled" data-toggle="tab" href="#panel85" role="tab" aria-selected="false">
                         <!-- <i class="fas fa-envelope fa-2x" aria-hidden="true"></i> -->
-                        <br><h2 class="white-text"> MODEL</h2>
+                        <h3 class="white-text"> MODEL</h3>
                     </a>
                   </li>
-                  <li class="nav-item" id="navli">
+                  <li class="nav-item search-accessories">
                     <a id="accessory-trim" class="nav-link waves-light waves-effect waves-light disabled" data-toggle="tab" href="#panel86" role="tab" aria-selected="true">
                         <!-- <i class="fas fa-star fa-2x" aria-hidden="true"></i> -->
-                        <br><h2 class="white-text"> TRIM</h2>
+                        <h3 class="white-text"> TRIM</h3>
                     </a>
                   </li>
               </ul>
@@ -614,7 +614,7 @@ if(isset($_POST['submit'])) {
               <!--Panel 1-->
               <div class="tab-pane fade active show" id="panel83" role="tabpanel">
                   <?php
-                    $sql="SELECT * FROM `tblyear`";
+                    $sql="SELECT * FROM `tblyear` order by year desc";
                     $query = $dbh->prepare($sql);
                     $query->execute();
                     $results = $query -> fetchAll(PDO::FETCH_OBJ);

@@ -25,7 +25,7 @@
 #panel86 {
   text-align: center;
 }
-  #panel86 > button {
+  #panel86 > a {
     width: 180px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -33,11 +33,38 @@
   }
  .nav>li>a:hover, .nav>li>a:focus{
   background:#4285f4;
-  border-radius:0px 50px 50px 0px;
+  /* border-radius:0px 50px 50px 0px; */
 }
-
-#navli.nav-item{
-  border-radius: 0px 50px 50px 0px;
-  border-right:1px solid #FFF;
-  width:250px;
+li.nav-item.search-accessories::before{
+  content: " ";
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 42px solid transparent;
+    border-bottom: 42px solid transparent;
+    border-left: 35px solid rgb(66, 133, 244);
+    position: absolute;
+    /* top: -6px; */
+    /* margin-top: 3px; */
+    margin-left: 0px;
+    left: 100%;
+    z-index: 3;
+}
+li.nav-item.search-accessories::after{
+  content: " ";
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 42px solid transparent;
+  border-bottom: 42px solid transparent;
+  border-left: 37px solid hsla(0, 0%, 83%, 1);
+  position: absolute;
+  top: 0%;
+  /* margin-top: -50px; */
+  left: 100%;
+  z-index: 2;
+  margin-right: -15px;
+}
+li.nav-item.search-accessories {
+  margin: 0px 34px;
 }

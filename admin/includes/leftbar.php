@@ -24,6 +24,11 @@
 			<li><a href="create-model.php">Create Models</a></li>
 			<li><a href="manage-model.php">Manage Models</a></li>
 		</ul>
+		<li><a href="#"><i class="fa fa-files-o"></i>Manage Years</a>
+		<ul>
+			<li><a href="create-year.php">Create Years</a></li>
+			<li><a href="manage-year.php">Manage Years</a></li>
+		</ul>
 		<li><a href="#"><i class="fa fa-files-o"></i> Trims</a>
 		<ul>
 			<li><a href="create-trim.php">Create Trims</a></li>
